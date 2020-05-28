@@ -1,11 +1,12 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
+import PropTypes from 'prop-types';
+import Loader from 'react-loader-spinner';
+import Header from './components/header/Header';
+import ContainerTransfer from './components/transfer/ContainerTransfer';
+import ContainerBtnSort from './components/btn_sort/ContainerBtnSort';
+import TicketsWrap from './components/tickets/TicketsWrap';
 
-import Header from "./components/header/Header.jsx";
-import Transfer from "./components/transfer/Transfer.jsx";
-import CheapFast from "./components/btn_cheap_fast/CheapFast.jsx";
-import TicketsWrap from "./components/tickets/TicketsWrap.jsx";
-import Loader from "react-loader-spinner";
 const Container = styled.div`
   max-width: 750px;
   width: 100%;
@@ -32,36 +33,56 @@ const LoaderWrap = styled.div`
 `;
 
 function App(props) {
-  const renderTickets = () => {
-    return props.isLoading ? (
-      <TicketsWrap arr_tickets={props.tickets} />
-    ) : (
-      <LoaderWrap>
-        <Loader type="Bars" color="#2196f3" height={75} width={75} />
-      </LoaderWrap>
-    );
-  };
+  const {
+    isLoading,
+    filtred,
+    setFiltred,
+    setActiveBtnSort,
+    activeBtnSort,
+    handleChangeTransfer,
+    transfer,
+    setTransfer,
+  } = props;
+  const renderTickets = () => (isLoading ? (
+    <TicketsWrap arr_tickets={filtred} />
+  ) : (
+    <LoaderWrap>
+      <Loader type="Bars" color="#2196f3" height={75} width={75} />
+    </LoaderWrap>
+  ));
   return (
     <Container>
       <Header />
       <ContainerContent>
-        <Transfer
-          btnAllTransfer={props.btnAllTransfer}
-          btnNoTransfer={props.btnNoTransfer}
-          btnOneTransfer={props.btnOneTransfer}
-          btnTwoTransfer={props.btnTwoTransfer}
-          btnThreeTransfer={props.btnThreeTransfer}
-          objTransfer={props.objTransfer}
+        <ContainerTransfer
+          handleChangeTransfer={handleChangeTransfer}
+          filtred={filtred}
+          setFiltred={setFiltred}
+          transfer={transfer}
+          setTransfer={setTransfer}
         />
-        <CheapFast
-          btnCheap={props.btnCheap}
-          btnFast={props.btnFast}
-          isActiveBtn={props.isActiveBtn}
+        <ContainerBtnSort
+          activeBtnSort={activeBtnSort}
+          setFiltred={setFiltred}
+          filtred={filtred}
+          setActiveBtnSort={setActiveBtnSort}
         />
         {renderTickets()}
       </ContainerContent>
     </Container>
   );
 }
+
+App.propTypes = {
+  isLoading: PropTypes.bool.isRequired,
+  filtred: PropTypes.arrayOf(PropTypes.object).isRequired,
+  setFiltred: PropTypes.func.isRequired,
+  setActiveBtnSort: PropTypes.func.isRequired,
+  activeBtnSort: PropTypes.string.isRequired,
+  // eslint-disable-next-line react/require-default-props
+  handleChangeTransfer: PropTypes.func,
+  transfer: PropTypes.arrayOf(PropTypes.number).isRequired,
+  setTransfer: PropTypes.func.isRequired,
+};
 
 export default App;

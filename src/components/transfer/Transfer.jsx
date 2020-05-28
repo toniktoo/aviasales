@@ -1,8 +1,8 @@
-import React from "react";
-import styled from "styled-components";
-
-import Text from "../../styled_components/Text";
-import Checkbox from "../../styled_components/Checkbox";
+import React from 'react';
+import styled from 'styled-components';
+import PropTypes from 'prop-types';
+import Text from '../../styled_components/Text';
+import Checkbox from '../../styled_components/Checkbox';
 
 const ContainerTransfer = styled.div`
   height: 252px;
@@ -29,58 +29,55 @@ const TextTransfer = styled(Text)`
 `;
 
 const Transfer = (props) => {
+  const {
+    handleChangeTransfer, all, zero, one, two, three,
+  } = props;
   return (
     <ContainerTransfer>
       <Text style={{ marginTop: 0 }}>Количество пересадок</Text>
       <List>
         <li>
           <LabelTransfer>
-            <Checkbox
-              checked={props.objTransfer.all_transfer}
-              onChange={props.btnAllTransfer}
-            />
+            <Checkbox data-id="all" onChange={handleChangeTransfer} checked={all} />
             <TextTransfer>Все</TextTransfer>
           </LabelTransfer>
         </li>
         <li>
           <LabelTransfer>
-            <Checkbox
-              checked={props.objTransfer.no_transfer}
-              onChange={props.btnNoTransfer}
-            />
+            <Checkbox data-id="zero" onChange={handleChangeTransfer} checked={zero} />
             <TextTransfer>Без пересадок</TextTransfer>
           </LabelTransfer>
         </li>
         <li>
           <LabelTransfer>
-            <Checkbox
-              checked={props.objTransfer.one_transfer}
-              onChange={props.btnOneTransfer}
-            />
-            <TextTransfer>1 пересадки</TextTransfer>
+            <Checkbox data-id="one" onChange={handleChangeTransfer} checked={one} />
+            <TextTransfer>1 пересадка</TextTransfer>
           </LabelTransfer>
         </li>
         <li>
           <LabelTransfer>
-            <Checkbox
-              checked={props.objTransfer.two_transfer}
-              onChange={props.btnTwoTransfer}
-            />
+            <Checkbox data-id="two" onChange={handleChangeTransfer} checked={two} />
             <TextTransfer>2 пересадки</TextTransfer>
           </LabelTransfer>
         </li>
         <li>
           <LabelTransfer>
-            <Checkbox
-              checked={props.objTransfer.three_transfer}
-              onChange={props.btnThreeTransfer}
-            />
+            <Checkbox data-id="three" onChange={handleChangeTransfer} checked={three} />
             <TextTransfer>3 пересадки</TextTransfer>
           </LabelTransfer>
         </li>
       </List>
     </ContainerTransfer>
   );
+};
+
+Transfer.propTypes = {
+  all: PropTypes.bool.isRequired,
+  zero: PropTypes.bool.isRequired,
+  one: PropTypes.bool.isRequired,
+  two: PropTypes.bool.isRequired,
+  three: PropTypes.bool.isRequired,
+  handleChangeTransfer: PropTypes.func.isRequired,
 };
 
 export default Transfer;
