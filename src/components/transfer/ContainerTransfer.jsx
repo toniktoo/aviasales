@@ -3,58 +3,62 @@ import PropTypes from 'prop-types';
 import Transfer from './Transfer';
 
 const ContainerTransfer = (props) => {
-  const [all, setAll] = useState(true);
-  const [zero, setZero] = useState(false);
-  const [one, setOne] = useState(false);
-  const [two, setTwo] = useState(false);
-  const [three, setThree] = useState(false);
+  const [checkAll, setCheckAll] = useState(true);
+  const [checkZero, setCheckZero] = useState(false);
+  const [checkOne, setCheckOne] = useState(false);
+  const [checkTwo, setCheckTwo] = useState(false);
+  const [checkThree, setCheckThree] = useState(false);
 
-  const { setFiltred, transfer, setTransfer } = props;
+  const { setFiltredTickets, transfer, setTransfer } = props;
 
-  const filterStops = (name, count) => {
-    if (!name) {
-      if (all) {
-        setTransfer([count]);
-      } else {
-        setTransfer([...transfer, count]);
-      }
-    } else {
+  const setChecked = (name, count) => {
+    if (name) {
       setTransfer(transfer.filter((item) => item !== count));
+    } else if (checkAll) {
+      setTransfer([count]);
+    } else {
+      setTransfer([...transfer, count]);
     }
-    setAll(false);
-    setFiltred([]);
+    setCheckAll(false);
+    setFiltredTickets([]);
+  };
+
+  const setAll = () => {
+    setCheckZero(false);
+    setCheckOne(false);
+    setCheckTwo(false);
+    setCheckThree(false);
   };
 
   const handleChangeTransfer = (event) => {
-    switch (event.currentTarget.dataset.id) {
+    const checkedTransfer = event.currentTarget.dataset.id;
+    switch (checkedTransfer) {
       case 'all':
-        if (!all) {
-          setZero(false);
-          setOne(false);
-          setTwo(false);
-          setFiltred([]);
-          setTransfer([0, 1, 2, 3]);
-        } else {
-          setFiltred([]);
+        if (checkAll) {
+          setFiltredTickets([]);
           setTransfer([]);
+        } else {
+          setAll();
+          setFiltredTickets([]);
+          setTransfer([0, 1, 2, 3]);
         }
-        setAll(!all);
+        setCheckAll(!checkAll);
         break;
       case 'zero':
-        filterStops(zero, 0);
-        setZero(!zero);
+        setChecked(checkZero, 0);
+        setCheckZero(!checkZero);
         break;
       case 'one':
-        filterStops(one, 1);
-        setOne(!one);
+        setChecked(checkOne, 1);
+        setCheckOne(!checkOne);
         break;
       case 'two':
-        filterStops(two, 2);
-        setTwo(!two);
+        setChecked(checkTwo, 2);
+        setCheckTwo(!checkTwo);
         break;
       case 'three':
-        filterStops(three, 3);
-        setThree(!three);
+        setChecked(checkThree, 3);
+        setCheckThree(!checkThree);
         break;
       default:
         break;
@@ -63,18 +67,18 @@ const ContainerTransfer = (props) => {
 
   return (
     <Transfer
-      all={all}
-      zero={zero}
-      one={one}
-      two={two}
-      three={three}
+      checkAll={checkAll}
+      checkZero={checkZero}
+      checkOne={checkOne}
+      checkTwo={checkTwo}
+      checkThree={checkThree}
       handleChangeTransfer={handleChangeTransfer}
     />
   );
 };
 
 ContainerTransfer.propTypes = {
-  setFiltred: PropTypes.func.isRequired,
+  setFiltredTickets: PropTypes.func.isRequired,
   transfer: PropTypes.arrayOf(PropTypes.number).isRequired,
   setTransfer: PropTypes.func.isRequired,
 };

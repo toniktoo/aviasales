@@ -5,7 +5,7 @@ import Loader from 'react-loader-spinner';
 import Header from './components/header/Header';
 import ContainerTransfer from './components/transfer/ContainerTransfer';
 import ContainerBtnSort from './components/btn_sort/ContainerBtnSort';
-import TicketsWrap from './components/tickets/TicketsWrap';
+import ContainerTicket from './components/tickets/ContainerTicket';
 
 const Container = styled.div`
   max-width: 750px;
@@ -35,16 +35,15 @@ const LoaderWrap = styled.div`
 function App(props) {
   const {
     isLoading,
-    filtred,
-    setFiltred,
+    filtredTickets,
+    setFiltredTickets,
     setActiveBtnSort,
     activeBtnSort,
-    handleChangeTransfer,
     transfer,
     setTransfer,
   } = props;
   const renderTickets = () => (isLoading ? (
-    <TicketsWrap arr_tickets={filtred} />
+    <ContainerTicket filtredTickets={filtredTickets} />
   ) : (
     <LoaderWrap>
       <Loader type="Bars" color="#2196f3" height={75} width={75} />
@@ -55,16 +54,15 @@ function App(props) {
       <Header />
       <ContainerContent>
         <ContainerTransfer
-          handleChangeTransfer={handleChangeTransfer}
-          filtred={filtred}
-          setFiltred={setFiltred}
+          filtredTickets={filtredTickets}
+          setFiltredTickets={setFiltredTickets}
           transfer={transfer}
           setTransfer={setTransfer}
         />
         <ContainerBtnSort
           activeBtnSort={activeBtnSort}
-          setFiltred={setFiltred}
-          filtred={filtred}
+          setFiltredTickets={setFiltredTickets}
+          filtredTickets={filtredTickets}
           setActiveBtnSort={setActiveBtnSort}
         />
         {renderTickets()}
@@ -75,12 +73,10 @@ function App(props) {
 
 App.propTypes = {
   isLoading: PropTypes.bool.isRequired,
-  filtred: PropTypes.arrayOf(PropTypes.object).isRequired,
-  setFiltred: PropTypes.func.isRequired,
+  filtredTickets: PropTypes.arrayOf(PropTypes.object).isRequired,
+  setFiltredTickets: PropTypes.func.isRequired,
   setActiveBtnSort: PropTypes.func.isRequired,
   activeBtnSort: PropTypes.string.isRequired,
-  // eslint-disable-next-line react/require-default-props
-  handleChangeTransfer: PropTypes.func,
   transfer: PropTypes.arrayOf(PropTypes.number).isRequired,
   setTransfer: PropTypes.func.isRequired,
 };

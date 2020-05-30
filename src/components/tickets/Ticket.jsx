@@ -41,6 +41,8 @@ const Ticket = (props) => {
   const { price, carrier, segments } = data;
   const flightTo = segments[0];
   const flightFrom = segments[1];
+  const thousandPrice = price.toString().substr(0, 2);
+  const hundredPrice = price.toString().substr(2);
 
   const renderCountTransfer = (arr) => {
     switch (arr.stops.length) {
@@ -59,12 +61,13 @@ const Ticket = (props) => {
   const renderFlight = (arr) => `${arr.origin} - ${arr.destination}`;
   const renderCountTime = (arr) => `${Math.trunc(arr.duration / 60)}ч ${arr.duration % 60}м`;
 
+  const renderPrice = () => `${thousandPrice} ${hundredPrice} P`;
+
   return (
     <ContainerTicket>
       <Box gridArea="1 / 1 / 2 / 2">
         <Text color="#2196F3" fontSize="24px">
-          {price}
-          Р
+          {renderPrice()}
         </Text>
       </Box>
       <Box gridArea="2 / 1 / 3 / 2">
@@ -89,11 +92,15 @@ const Ticket = (props) => {
       </Box>
       <Box gridArea="2 / 3 / 3 / 4">
         <Text color="#A0B0B9">{renderCountTransfer(flightTo)}</Text>
-        <Text>{flightTo.stops.map((stop) => `${stop} `)}</Text>
+        <Text>
+          {flightTo.stops.map((stop, index) => (index + 1 === flightTo.stops.length ? `${stop} ` : `${stop}, `))}
+        </Text>
       </Box>
       <Box gridArea="3 / 3 / 4 / 4">
         <Text color="#A0B0B9">{renderCountTransfer(flightFrom)}</Text>
-        <Text>{flightFrom.stops.map((stop) => `${stop} `)}</Text>
+        <Text>
+          {flightFrom.stops.map((stop, index) => (index + 1 === flightFrom.stops.length ? `${stop} ` : `${stop}, `))}
+        </Text>
       </Box>
     </ContainerTicket>
   );
